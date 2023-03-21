@@ -339,7 +339,7 @@ app.use(bodyParser.json());
     });
 
     app.post("/analytics/createRankedTransaction", async (req, res) => {
-      const result = await customerCollection
+      await customerCollection
         .aggregate([
           {
             $lookup: {
@@ -444,6 +444,9 @@ app.use(bodyParser.json());
               bathromm_by_guest: { $divide: ["$bathrooms", "$guests_included"] },
             },
           },
+          {
+            $sort: {bathromm_by_guest : -1}
+          }
         ])
         .toArray();
       res.json(result);
